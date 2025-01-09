@@ -21,8 +21,10 @@ locales-all \
 tzdata \
 && rm -rf /var/lib/apt/lists/*
 
+RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+
 # Download and install conda
-RUN wget 'https://repo.anaconda.com/miniconda/Miniconda3-{conda_version}-Linux-{conda_arch}.sh' -O miniconda.sh \
+RUN wget 'https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-{conda_version}-Linux-{conda_arch}.sh' -O miniconda.sh \
     && bash miniconda.sh -b -p /opt/miniconda3
 # Add conda to PATH
 ENV PATH=/opt/miniconda3/bin:$PATH
@@ -35,6 +37,7 @@ RUN adduser --disabled-password --gecos 'dog' nonroot
 
 _DOCKERFILE_ENV = r"""FROM --platform={platform} sweb.base.{arch}:latest
 
+RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 COPY ./setup_env.sh /root/
 RUN sed -i -e 's/\r$//' /root/setup_env.sh
 RUN chmod +x /root/setup_env.sh
@@ -48,6 +51,7 @@ RUN echo "source /opt/miniconda3/etc/profile.d/conda.sh && conda activate testbe
 
 _DOCKERFILE_INSTANCE = r"""FROM --platform={platform} {env_image_name}
 
+RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 COPY ./setup_repo.sh /root/
 RUN sed -i -e 's/\r$//' /root/setup_repo.sh
 RUN /bin/bash /root/setup_repo.sh
