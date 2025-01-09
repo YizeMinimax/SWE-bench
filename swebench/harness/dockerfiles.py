@@ -22,6 +22,7 @@ tzdata \
 && rm -rf /var/lib/apt/lists/*
 
 RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+RUN export proxy="http://pac-internal.xaminim.com:3129" && export https_proxy=$proxy && export http_proxy=$proxy && export ftp_proxy=$proxy && export no_proxy="localhost,127.0.0.1,*.xaminim.com,10.0.0.0/8"
 
 # Download and install conda
 RUN wget 'https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-{conda_version}-Linux-{conda_arch}.sh' -O miniconda.sh \
